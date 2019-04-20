@@ -50,7 +50,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if(!emailID.isEmpty() && !passwordID.isEmpty()) {
                     if(passwordID.equals(passwordRepeatID)) {
-                        Register(emailID, passwordID);
+                        register(emailID, passwordID);
                     }else {
                         Toast.makeText(SignUpActivity.this, "Passwords must match!", Toast.LENGTH_SHORT).show();
                     }
@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
-    private void Register(String email, String password) {
+    private void register(String email, String password) {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -74,7 +74,7 @@ public class SignUpActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception e) {
                 if(e instanceof FirebaseAuthException) {
-                    if(((FirebaseAuthException) e).getErrorCode().equals("ERROR_INVALID_MAIL") || ((FirebaseAuthException) e).getErrorCode().equals("ERROR_INVALID_PASSWORD")) {
+                    if(((FirebaseAuthException)e).getErrorCode().equals("ERROR_INVALID_EMAIL")) {
                         Toast.makeText(SignUpActivity.this, "Invalid Mail or Password", Toast.LENGTH_SHORT).show();
                     }
                 }
