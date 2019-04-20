@@ -9,12 +9,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.navigationdrawerapp.Controller.Validator;
 import com.example.navigationdrawerapp.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,8 +30,6 @@ public class SignUpActivity extends AppCompatActivity {
     EditText signUpPasswordRepeat;
     @BindView(R.id.signUp_button)
     Button signUpButton;
-
-    Validator signUpValidator = new Validator();
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -49,12 +48,14 @@ public class SignUpActivity extends AppCompatActivity {
                 passwordID = signUpPassword.getText().toString().trim();
                 passwordRepeatID = signUpPasswordRepeat.getText().toString().trim();
 
-                if(signUpValidator.isEmailValid(emailID,SignUpActivity.this) ==1 && signUpValidator.isPasswordValid(passwordID, SignUpActivity.this) ==1) {
+                if(!emailID.isEmpty() && !passwordID.isEmpty()) {
                     if(passwordID.equals(passwordRepeatID)) {
                         Register(emailID, passwordID);
                     }else {
                         Toast.makeText(SignUpActivity.this, "Passwords must match!", Toast.LENGTH_SHORT).show();
                     }
+                }else {
+                    Toast.makeText(SignUpActivity.this, "Field cannot be empty...", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -64,8 +65,19 @@ public class SignUpActivity extends AppCompatActivity {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                startActivity(new Intent(SignUpActivity.this, MainActivity.class));
-                Toast.makeText(SignUpActivity.this, "Signed up successfully! ", Toast.LENGTH_SHORT).show();
+                if(task.isSuccessful()) {
+                    startActivity(new Intent(SignUpActivity.this, SignInActivity.class));
+                    Toast.makeText(SignUpActivity.this, "Signed up successfully! ", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(this, new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                if(e instanceof FirebaseAuthException) {
+                    if(((FirebaseAuthException) e).getErrorCode().equals("ERROR_INVALID_MAIL") || ((FirebaseAuthException) e).getErrorCode().equals("ERROR_INVALID_PASSWORD")) {
+                        Toast.makeText(SignUpActivity.this, "Invalid Mail or Password", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
     }
