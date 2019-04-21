@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragment.ProfileFragment"
+    android:background="@drawable/photo01">
+
+    <ImageView
+        android:id="@+id/profile_picture"
+        android:background="@drawable/profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="50dp"
+        />
+
+    <TextView
+        android:id="@+id/profile_description"
+        android:text="@string/description"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/profile_picture"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        />
+
+    <TextView
+        android:id="@+id/profile_mail"
+        android:hint="@string/mail"
+        android:textSize="17sp"
+        android:textColorHint="@color/colorWhite"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@+id/profile_instagram"
+        android:layout_marginBottom="20dp"
+        />
+
+    <ImageButton
+        android:id="@+id/profile_instagram"
+        android:background="@drawable/take_photo"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        />
+
+</RelativeLayout>

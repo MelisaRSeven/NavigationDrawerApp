@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -33,6 +34,8 @@ public class SignInActivity extends AppCompatActivity {
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    FirebaseUser mUser = FirebaseAuth.getInstance().getCurrentUser();
+
     @BindView(R.id.signIn_forget_password)
     TextView signInForgetPassword;
 
@@ -41,6 +44,10 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
         ButterKnife.bind(this);
+
+        if(mUser != null) {
+            startActivity(new Intent(SignInActivity.this, MainActivity.class));
+        }
     }
 
     @OnClick({R.id.signIn_button, R.id.signIn_sign_up})
